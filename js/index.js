@@ -9,6 +9,15 @@ $(function() {
         messagingSenderId: "666805898095"
     };
     firebase.initializeApp(config);
+    
+    
+    var firepadRef = getExampleRef();
+      // Create a random ID to use as our user ID (we must give this to firepad and FirepadUserList).
+      var userId = Math.floor(Math.random() * 9999999999).toString();
+      
+      //// Create FirepadUserList (with our desired userId).
+      var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
+          document.getElementById('userlist'), userId);
 
         // Get the editor id, using Url.js
     // The queryString method returns the value of the id querystring parameter
