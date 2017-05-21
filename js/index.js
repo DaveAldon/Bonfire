@@ -1,4 +1,4 @@
-$(function() {
+function init() {
     // Init Firebase
     var config = {
         apiKey: "AIzaSyB284IXRfrPx3LpNaGGVr1a66JhD3NUxKI",
@@ -9,21 +9,38 @@ $(function() {
         messagingSenderId: "666805898095"
     };
     firebase.initializeApp(config);
-    
-    
+
     var firepadRef = getExampleRef();
       // Create a random ID to use as our user ID (we must give this to firepad and FirepadUserList).
       var userId = Math.floor(Math.random() * 9999999999).toString();
-      
+
       //// Create FirepadUserList (with our desired userId).
       var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
           document.getElementById('userlist'), userId);
 
-        // Get the editor id, using Url.js
+    // Helper to get hash from end of URL or generate a random one.
+    function getExampleRef() {
+      var ref = firebase.database().ref();
+      var hash = window.location.hash.replace(/#/g, '');
+      if (hash) {
+        ref = ref.child(hash);
+      } else {
+        ref = ref.push(); // generate unique location.
+        window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
+      }
+      if (typeof console !== 'undefined') {
+        console.log('Firebase data: ', ref.toString());
+      }
+      return ref;
+    }
+}
+
+$(function() {
+    // Get the editor id, using Url.js
     // The queryString method returns the value of the id querystring parameter
     // We default to "_", for users which do not use a custom id.
     var editorId = Url.queryString("id") || "_";
-    
+
     // This is the local storage field name where we store the user theme
     // We set the theme per user, in the browser's local storage
     var LS_THEME_KEY = "editor-theme";
@@ -33,7 +50,6 @@ $(function() {
     function getTheme() {
         return localStorage.getItem(LS_THEME_KEY) || "ace/theme/monokai";
     }
-    
     // Select the desired theme of the editor
     $("#select-theme").change(function () {
         // Set the theme in the editor
