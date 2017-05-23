@@ -1,18 +1,18 @@
 
 #loader {
-  position: relative;
-  top: 50%;
-    left: 50%;
-    margin: -20px 0 20px -40px;
-  width: 150px;
-  height: 150px;
-  border: 16px solid white;
-  border-radius: 50%;
-  border-top: 16px solid #FF5A0D;
-  width: 80px;
-  height: 80px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
+	position: relative;
+	top: 50%;
+	left: 50%;
+	margin: -20px 0 20px -40px;
+	width: 150px;
+	height: 150px;
+	border: 16px solid white;
+	border-radius: 50%;
+	border-top: 16px solid #FF5A0D;
+	width: 80px;
+	height: 80px;
+	-webkit-animation: spin 2s linear infinite;
+	animation: spin 2s linear infinite;
 }
 
 @-webkit-keyframes spin {
@@ -78,14 +78,13 @@ a {
 li a:hover {
       background:#FF9200;
     }
-  .active a {
+.active a {
     background:#FF5A0D;
   }
 
 .tab-content > div:last-child {
   display:none;
 }
-
 
 h1 {
   text-align:center;
@@ -139,6 +138,17 @@ input, textarea {
 		border-color:white;
   }
 
+/* For later use for animation
+#signup, #login {
+	transition: opacity 2s linear, margin-top 2s step-start, z-index 2s step-start;
+}
+.hidden {
+  opacity: 0;
+  z-index: -5;
+  transition-timing-function: linear, step-end, step-end;
+}
+*/
+  
 textarea {
   border:2px solid white;
   resize: vertical;

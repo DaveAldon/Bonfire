@@ -1,33 +1,46 @@
-$('.form').find('input, textarea').on('keyup blur focus', function (e) {
-    var $this = $(this),
-      label = $this.prev('label');
-      if (e.type === 'keyup') {
-            if ($this.val() === '') {
-          label.removeClass('active highlight');
-        } else {
-          label.addClass('active highlight');
-        }
-    } else if (e.type === 'blur') {
-        if( $this.val() === '' ) {
-            label.removeClass('active highlight'); 
-            } else {
-            label.removeClass('highlight');   
-            }   
-    } else if (e.type === 'focus') {
+function init() {
+	// Init Firebase
+	var config = {
+		apiKey: "AIzaSyB284IXRfrPx3LpNaGGVr1a66JhD3NUxKI",
+		authDomain: "bonfire-b6633.firebaseapp.com",
+		databaseURL: "https://bonfire-b6633.firebaseio.com",
+		projectId: "bonfire-b6633",
+		storageBucket: "bonfire-b6633.appspot.com",
+		messagingSenderId: "666805898095"
+	};
+    firebase.initializeApp(config);
+};
 
-      if( $this.val() === '' ) {
-            label.removeClass('highlight'); 
-            } 
-      else if( $this.val() !== '' ) {
-            label.addClass('highlight');
-        }
-    }
-});
-$('.tab a').on('click', function (e) {
-    e.preventDefault();
-    $(this).parent().addClass('active');
-    $(this).parent().siblings().removeClass('active');
-    target = $(this).attr('href');
-    $('.tab-content > div').not(target).hide();
-    $(target).fadeIn(600);
-});
+function createAccount() {
+	alert("sdgf");
+	usr = document.getElementById("newusr");
+	pss = document.getElementById("newpss");
+	firebase.auth().createUserWithEmailAndPassword(usr.value, pss.value).then(function() {
+		window.location = "~/Bonfire.html";
+	}).catch(function(error) {
+	  // Handle Errors here.
+	  var errorCode = error.code;
+	  var errorMessage = error.message;
+	  alert(errorMessage);
+	});
+}
+
+function login() {
+	usr = document.getElementById("logusr");
+	pss = document.getElementById("logpss");
+	firebase.auth().signInWithEmailAndPassword(usr.value, pss.value).catch(function(error) {
+		// Handle Errors here.
+		var errorCode = error.code;
+		var errorMessage = error.message;
+		alert(errorMessage);
+	});
+}
+
+function logout() {
+	//For logout use later
+	firebase.auth().signOut().then(function() {
+		  // Sign-out successful.
+		}).catch(function(error) {
+		  // An error happened.
+	});
+}
