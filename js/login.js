@@ -8,14 +8,12 @@ var config = {
 };
 firebase.initializeApp(config);
 
-var userId = 'Guest ' + Math.floor(Math.random() * 999).toString();
-
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log("in");
-		userId = user.email;
   } else {
 		console.log("out");
+		//window.location = "login.html";
   }
 });
 
@@ -27,6 +25,7 @@ function createAccount() {
 	  var errorMessage = error.message;
 		alert(errorMessage);
 	});
+	gotoEditor();
 }
 
 function login() {
@@ -38,13 +37,22 @@ function login() {
 		var errorMessage = error.message;
 		alert(errorMessage);
 	});
+	gotoEditor();
 }
 
 function logout() {
 	//For logout use later
 	firebase.auth().signOut().then(function() {
-		  // Sign-out successful.
+		  gotoLogin();
 		}).catch(function(error) {
 		  // An error happened.
 	});
+}
+
+function gotoEditor() {
+	window.location = "bonfire.html";
+}
+
+function gotoLogin() {
+	window.location = "index.html";
 }

@@ -1,43 +1,50 @@
+
+var nameInput;
+var username;
+//Listener for login/out state
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    username = user.email;
+    init();
+  }
+});
+
 function init() {
+  //// Get Firebase Database reference.
+  var firepadRef = getExampleRef();
+  // Create a random ID to use as our user ID (we must give this to firepad and FirepadUserList).
+  var userId = Math.floor(Math.random() * 9999999999).toString();
+  //// Create FirepadUserList (with our desired userId).
+  var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
+      document.getElementById('userlist'), userId);
+}
 
-
-
-      //// Get Firebase Database reference.
-      var firepadRef = getExampleRef();
-      // Create a random ID to use as our user ID (we must give this to firepad and FirepadUserList).
-      var userId = Math.floor(Math.random() * 9999999999).toString();
-
-      //// Create FirepadUserList (with our desired userId).
-      var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
-          document.getElementById('userlist'), userId);
-    }
-    // Helper to get hash from end of URL or generate a random one.
-    function getExampleRef() {
-      var ref = firebase.database().ref();
-      var hash = window.location.hash.replace(/#/g, '');
-      if (hash) {
-        ref = ref.child(hash);
-      } else {
-        ref = ref.push(); // generate unique location.
-        window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
-      }
-      if (typeof console !== 'undefined') {
-        //console.log('Firebase data: ', ref.toString());
-      }
-      return ref;
-    }
+// Helper to get hash from end of URL or generate a random one.
+function getExampleRef() {
+  var ref = firebase.database().ref();
+  var hash = window.location.hash.replace(/#/g, '');
+  if (hash) {
+    ref = ref.child(hash);
+  } else {
+    ref = ref.push(); // generate unique location.
+    window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
+  }
+  if (typeof console !== 'undefined') {
+    //console.log('Firebase data: ', ref.toString());
+  }
+  return ref;
+}
 
 var FirepadUserList = (function() {
   function FirepadUserList(ref, place, userId, displayName) {
     if (!(this instanceof FirepadUserList)) {
       return new FirepadUserList(ref, place, userId, displayName);
     }
-
+    displayName = username;
     this.ref_ = ref;
     this.userId_ = userId;
     this.place_ = place;
     this.firebaseCallbacks_ = [];
-
     var self = this;
     this.hasName_ = !!displayName;
     this.displayName_ = displayName || 'Guest ' + Math.floor(Math.random() * 1000);
@@ -97,8 +104,9 @@ var FirepadUserList = (function() {
       }
     });
 
-    var nameInput = elt('input', null, { type: 'text', 'class': 'firepad-userlist-name-input'} );
+    nameInput = elt('input', null, { type: 'text', 'class': 'firepad-userlist-name-input'} );
     nameInput.value = this.displayName_;
+    //nameInput.value = username;
 
     var nameHint = elt('div', 'ENTER YOUR NAME', { 'class': 'firepad-userlist-name-hint'} );
     if (this.hasName_) nameHint.style.display = 'none';
@@ -106,13 +114,14 @@ var FirepadUserList = (function() {
     // Update Firebase when name changes.
     var self = this;
     on(nameInput, 'change', function(e) {
-      var name = nameInput.value || "Guest " + Math.floor(Math.random() * 1000);
+      var name = nameInput.value;
       myUserRef.child('name').onDisconnect().remove();
       myUserRef.child('name').set(name);
       nameHint.style.display = 'none';
       nameInput.blur();
       self.displayName_ = name;
       stopEvent(e);
+      console.log("update");
     });
 
     var nameDiv = elt('div', [nameInput, nameHint]);
