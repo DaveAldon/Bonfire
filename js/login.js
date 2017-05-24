@@ -8,11 +8,15 @@ var config = {
 };
 firebase.initializeApp(config);
 
+var state = false;
+
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log("in");
+		if(state) gotoEditor();
   } else {
 		console.log("out");
+		//gotoLogin();
 		//window.location = "login.html";
   }
 });
@@ -37,13 +41,22 @@ function login() {
 		var errorMessage = error.message;
 		alert(errorMessage);
 	});
-	gotoEditor();
+	state = true;
 }
 
 function logout() {
 	//For logout use later
 	firebase.auth().signOut().then(function() {
+		state = false;
 		  gotoLogin();
+		}).catch(function(error) {
+		  // An error happened.
+	});
+}
+
+function logoutInit() {
+	//For logout use later
+	firebase.auth().signOut().then(function() {
 		}).catch(function(error) {
 		  // An error happened.
 	});
