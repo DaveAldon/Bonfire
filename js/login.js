@@ -1,5 +1,3 @@
-
-
 var config = {
 	apiKey: "AIzaSyB284IXRfrPx3LpNaGGVr1a66JhD3NUxKI",
 	authDomain: "bonfire-b6633.firebaseapp.com",
@@ -10,9 +8,12 @@ var config = {
 };
 firebase.initializeApp(config);
 
+var userId = 'Guest ' + Math.floor(Math.random() * 999).toString();
+
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     console.log("in");
+		userId = user.email;
   } else {
 		console.log("out");
   }

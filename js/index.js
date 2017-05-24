@@ -1,40 +1,3 @@
-function init() {
-    // Init Firebase
-    var config = {
-        apiKey: "AIzaSyB284IXRfrPx3LpNaGGVr1a66JhD3NUxKI",
-        authDomain: "bonfire-b6633.firebaseapp.com",
-        databaseURL: "https://bonfire-b6633.firebaseio.com",
-        projectId: "bonfire-b6633",
-        storageBucket: "bonfire-b6633.appspot.com",
-        messagingSenderId: "666805898095"
-    };
-    firebase.initializeApp(config);
-
-    var firepadRef = getExampleRef();
-      // Create a random ID to use as our user ID (we must give this to firepad and FirepadUserList).
-      var userId = Math.floor(Math.random() * 9999999999).toString();
-
-      //// Create FirepadUserList (with our desired userId).
-      var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
-          document.getElementById('userlist'), userId);
-
-    // Helper to get hash from end of URL or generate a random one.
-    function getExampleRef() {
-      var ref = firebase.database().ref();
-      var hash = window.location.hash.replace(/#/g, '');
-      if (hash) {
-        ref = ref.child(hash);
-      } else {
-        ref = ref.push(); // generate unique location.
-        window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
-      }
-      if (typeof console !== 'undefined') {
-        console.log('Firebase data: ', ref.toString());
-      }
-      return ref;
-    }
-}
-
 $(function() {
     // Get the editor id, using Url.js
     // The queryString method returns the value of the id querystring parameter
@@ -54,7 +17,7 @@ $(function() {
     $("#select-theme").change(function () {
         // Set the theme in the editor
         editor.setTheme(this.value);
-        
+
         // Update the theme in the localStorage
         // We wrap this operation in a try-catch because some browsers don't
         // support localStorage (e.g. Safari in private mode)
@@ -62,8 +25,8 @@ $(function() {
             localStorage.setItem(LS_THEME_KEY, this.value);
         } catch (e) {}
     }).val(getTheme());
-    
-    // Select the desired programming language you want to code in 
+
+    // Select the desired programming language you want to code in
     var $selectLang = $("#select-lang").change(function () {
         // Set the language in the Firebase object
         // This is a preference per editor
@@ -81,13 +44,13 @@ $(function() {
     var editor = null;
     // Make a reference to the database
     var db = firebase.database();
-    
-    // Write the entries in the database 
+
+    // Write the entries in the database
     var editorValues = db.ref("editor_values");
-    
+
     // Get the current editor reference
     var currentEditorValue = editorValues.child(editorId);
-    
+
     // Store the current timestamp (when we opened the page)
     // It's quite useful to know that since we will
     // apply the changes in the future only
@@ -117,7 +80,7 @@ $(function() {
 
         // Get the queue reference
         var queueRef = currentEditorValue.child("queue");
-        
+
         // This boolean is going to be true only when the value is being set programmatically
         // We don't want to end with an infinite cycle, since ACE editor triggers the
         // `change` event on programmatic changes (which, in fact, is a good thing)
@@ -125,7 +88,7 @@ $(function() {
 
         // When we change something in the editor, update the value in Firebase
         editor.on("change", function(e) {
-                    
+
             // In case the change is emitted by us, don't do anything
             // (see below, this boolean becomes `true` when we receive data from Firebase)
             if (applyingDeltas) {
@@ -150,29 +113,29 @@ $(function() {
             });
         });
 
-        // Get the editor document object 
+        // Get the editor document object
         var doc = editor.getSession().getDocument();
 
         // Listen for updates in the queue
         queueRef.on("child_added", function (ref) {
-        
+
             // Get the timestamp
             var timestamp = ref.key.split(":")[0];
-        
+
             // Do not apply changes from the past
             if (openPageTimestamp > timestamp) {
                 return;
             }
-        
+
             // Get the snapshot value
             var value = ref.val();
-            
+
             // In case it's me who changed the value, I am
             // not interested to see twice what I'm writing.
             // So, if the update is made by me, it doesn't
             // make sense to apply the update
             if (value.by === uid) { return; }
-        
+
             // We're going to apply the changes by somebody else in our editor
             //  1. We turn applyingDeltas on
             applyingDeltas = true;
@@ -184,10 +147,10 @@ $(function() {
 
         // Get the current content
         var val = contentRef.val();
-        
+
         // If the editor doesn't exist already....
         if (val === null) {
-            // ...we will initialize a new one. 
+            // ...we will initialize a new one.
             // ...with this content:
             val = "/* Welcome to your Bonfire! */";
 
@@ -199,17 +162,17 @@ $(function() {
             });
         }
 
-        // We're going to update the content, so let's turn on applyingDeltas 
+        // We're going to update the content, so let's turn on applyingDeltas
         applyingDeltas = true;
-        
+
         // ...then set the value
         // -1 will move the cursor at the begining of the editor, preventing
         // selecting all the code in the editor (which is happening by default)
         editor.setValue(val, -1);
-        
+
         // ...then set applyingDeltas to false
         applyingDeltas = false;
-        
+
         // And finally, focus the editor!
         editor.focus();
     });

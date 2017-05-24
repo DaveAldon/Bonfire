@@ -5,19 +5,14 @@
 	<title>Bonfire</title>
 	<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
         <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
-        
-        <script src="js/firepad-userlist.js"></script>
         <link rel="stylesheet" href="css/firepad-userlist.css" />
-        <style>
-            html { height: 100%; }
-            body { margin: 0; height: 100%; }
-            /* Height / width / positioning can be customized for your use case.
-               For demo purposes, we make the user list 175px and firepad fill the rest of the page. */
-            #userlist {
-              position: absolute; left: 0; top: 0; bottom: 0; height: auto;
-              width: 175px;
-            }
-        </style>
+        <script src="https://www.gstatic.com/firebasejs/4.0.0/firebase.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/urljs/2.3.1/url.min.js"></script>
+        <script src="js/login.js"></script>
+        <script src="js/firepad-userlist.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
     </head>
     <body onload="init()">
         <h2>Building your Bonfire...</h2>
@@ -27,7 +22,7 @@
         <div class="controls">
             <form >
                 <input id="input" name="id" placeholder="Editor name">
-            </form> 
+            </form>
             <select id="select-theme" class="select-input">
                 <optgroup label="Bright">
                     <option value="ace/theme/chrome">Chrome</option>
@@ -209,51 +204,5 @@
                 <option value="django">Django</option>
             </select>
         </div>
-
-        <!-- Firebase API -->
-        <script src="https://www.gstatic.com/firebasejs/4.0.0/firebase.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <!-- Ace API -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript" charset="utf-8"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/urljs/2.3.1/url.min.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script>
-            function init() {
-                // Init Firebase
-                var config = {
-                    apiKey: "AIzaSyB284IXRfrPx3LpNaGGVr1a66JhD3NUxKI",
-                    authDomain: "bonfire-b6633.firebaseapp.com",
-                    databaseURL: "https://bonfire-b6633.firebaseio.com",
-                    projectId: "bonfire-b6633",
-                    storageBucket: "bonfire-b6633.appspot.com",
-                    messagingSenderId: "666805898095"
-                };
-                firebase.initializeApp(config);
-
-                var firepadRef = getExampleRef();
-                  // Create a random ID to use as our user ID (we must give this to firepad and FirepadUserList).
-                  var userId = Math.floor(Math.random() * 9999999999).toString();
-
-                  //// Create FirepadUserList (with our desired userId).
-                  var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
-                      document.getElementById('userlist'), userId);
-
-                // Helper to get hash from end of URL or generate a random one.
-                function getExampleRef() {
-                  var ref = firebase.database().ref();
-                  var hash = window.location.hash.replace(/#/g, '');
-                  if (hash) {
-                    ref = ref.child(hash);
-                  } else {
-                    ref = ref.push(); // generate unique location.
-                    window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
-                  }
-                  if (typeof console !== 'undefined') {
-                    console.log('Firebase data: ', ref.toString());
-                  }
-                  return ref;
-                }
-            }
-        </script>
     </body>
 </html>
