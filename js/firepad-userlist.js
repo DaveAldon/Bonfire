@@ -1,12 +1,14 @@
-
 var nameInput;
 var username;
+
 //Listener for login/out state
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     username = user.email;
     init();
   }
+  //We don't want an anonymous user looking at a blank page, so send them back
+  else window.location = "index.html";
 });
 
 function init() {
@@ -22,16 +24,18 @@ function init() {
 // Helper to get hash from end of URL or generate a random one.
 function getExampleRef() {
   var ref = firebase.database().ref();
-  //var hash = window.location.hash.replace(/#/g, '');
-  //if (hash) {
-    //ref = ref.child(hash);
-  //} else {
-  //  ref = ref.push(); // generate unique location.
-  //  window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
-
-  if (typeof console !== 'undefined') {
-    //console.log('Firebase data: ', ref.toString());
-  }
+  //We'll activate a variant of this if we want users to login to their own random session URL
+  /*
+  var hash = window.location.hash.replace(/#/g, '');
+  if (hash) {
+    ref = ref.child(hash);
+  } else {
+    ref = ref.push(); // generate unique location.
+    window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
+	  
+	if (typeof console !== 'undefined') {
+    console.log('Firebase data: ', ref.toString());
+  } */
   return ref;
 }
 
@@ -106,12 +110,11 @@ var FirepadUserList = (function() {
 
     nameInput = elt('input', null, { type: 'text', 'class': 'firepad-userlist-name-input'} );
     nameInput.value = this.displayName_;
-    //nameInput.value = username;
 
     var nameHint = elt('div', 'ENTER YOUR NAME', { 'class': 'firepad-userlist-name-hint'} );
     if (this.hasName_) nameHint.style.display = 'none';
 
-    // Update Firebase when name changes.
+    // Update Firebase when name changes
     var self = this;
     on(nameInput, 'change', function(e) {
       var name = nameInput.value;
