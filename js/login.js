@@ -38,12 +38,8 @@ function login() {
 
 //User initiated logout that includes redirection
 function logout() {
-	firebase.auth().signOut().then(function() {
-		state = false;
-			gotoLogin();
-		}).catch(function(error) {
-			alert(error.message);
-	});
+	state = false;
+	gotoLogin();
 }
 
 //On load of login page we logout whoever might be in. This is different than logout() because it doesn't change the state which determines

@@ -1,11 +1,29 @@
 html { height: 100%; }
-body { margin: 0; height: 100%; }
+body { margin: 0;}
 
 #userlist {
-  position: absolute; left: 0; top: 0; bottom: 0; height: auto;
+  position: absolute; left: 0; top: 0; bottom: 0;
   width: 175px;
   background-color: #262626;
 }
+
+#logoutBtn {
+	height: 30px;
+	width: 80px;
+	text-decoration:none;
+	color: #ffffff;
+	transition:.5s ease;
+	background: #525252;
+	border: none;
+	border-radius: 10px;
+}
+
+#logoutBtn:hover {
+      background:#AB4A00;
+    }
+.active logoutBtn {
+    background:#AB4A00;
+  }
 
 .firepad-userlist {
   /* default height */
