@@ -1,8 +1,18 @@
-$(function() {
+var username;
+
+//Listener for login/out state
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    username = user.email.replace(".", "").replace("@","");
+    update();
+  }
+});
+
+function update() {
     // Get the editor id, using Url.js
     // The queryString method returns the value of the id querystring parameter
     // We default to "_", for users which do not use a custom id.
-    var editorId = Url.queryString("id") || "_";
+    var editorId = Url.queryString("id") || "Public";
 
     // This is the local storage field name where we store the user theme
     // We set the theme per user, in the browser's local storage
@@ -46,10 +56,11 @@ $(function() {
     var db = firebase.database();
 
     // Write the entries in the database
-    var editorValues = db.ref("editor_values");
+    var editorValues = db.ref("editor_values/");
 
     // Get the current editor reference
     var currentEditorValue = editorValues.child(editorId);
+    var currentQueueEditorValue = db.ref("editor_values/queues/");
 
     // Store the current timestamp (when we opened the page)
     // It's quite useful to know that since we will
@@ -79,7 +90,7 @@ $(function() {
         editor.$blockScrolling = Infinity;
 
         // Get the queue reference
-        var queueRef = currentEditorValue.child("queue");
+        var queueRef = currentQueueEditorValue.child("queue" + editorId);
 
         // This boolean is going to be true only when the value is being set programmatically
         // We don't want to end with an infinite cycle, since ACE editor triggers the
@@ -176,4 +187,4 @@ $(function() {
         // And finally, focus the editor!
         editor.focus();
     });
-});
+}
