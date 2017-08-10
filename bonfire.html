@@ -7,7 +7,8 @@
   <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
   <link rel="stylesheet" href="css/firepad-userlist.css" />
   <link rel="stylesheet" href="css/settingsstyle.css" />
-  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/sidebarstyle.css" />
+  <link rel="stylesheet" href="css/nav.css" />
   <script src="https://www.gstatic.com/firebasejs/4.0.0/firebase.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -16,12 +17,21 @@
   <script src="js/firepad-userlist.js"></script>
   <script type="text/javascript" src="js/index.js"></script>
     </head>
+    <div id="navbar" class="nav">
+      <div id="navTitle" class="nav">Bonfire</div>
+      <div id="settingsButton">
+        <label class="switch">
+          <input type="checkbox" onclick="toggleSettings(this)">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
     <body>
       <h2>Building your Bonfire...</h2>
-      <div id="sidebar">
+    <div id="sb" class="sidebar">
         <div id="userlist"></div>
         <div id="settings">
-          <div class="controls">
+        <div class="controls">
               <form>
                   <input name="id" class="select-input" placeholder="Editor name">
               </form>
@@ -209,11 +219,25 @@
           </div>
         </div>
       </div>
+    </div>
 		<div id="editor"></div>
-        <div id="loader"></div>
+    <div id="loader"></div>
     </body>
     <script>
-      document.getElementById("sidebar").style.visibility = "visible";
-      document.getElementById("editor").style.left = "175px";
+      function toggleSettings(checkbox)
+        {
+          if (checkbox.checked)
+          {
+            document.getElementById("sb").style.width = "175px";
+            document.getElementById("sb").style.left = "0px";
+            document.getElementById("sb").style.visibility = "visible";
+            document.getElementById("editor").style.left = "175px";
+          }
+          else {
+            document.getElementById("sb").style.left = "-175px";
+            document.getElementById("sb").style.visibility = "hidden";
+            document.getElementById("editor").style.left = "0px";
+          }
+        }
     </script>
 </html>
