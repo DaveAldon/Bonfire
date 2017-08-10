@@ -12,11 +12,11 @@ firebase.auth().onAuthStateChanged(function(user) {
 });
 
 function init() {
-  //// Get Firebase Database reference.
+  // Get Firebase Database reference.
   var firepadRef = getExampleRef();
   // Create a random ID to use as our user ID (we must give this to firepad and FirepadUserList).
   var userId = Math.floor(Math.random() * 9999999999).toString();
-  //// Create FirepadUserList (with our desired userId).
+  // Create FirepadUserList (with our desired userId).
   var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
       document.getElementById('userlist'), userId);
 }
