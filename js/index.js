@@ -70,7 +70,7 @@ function update() {
     // Take the editor value on start and set it in the editor
     currentEditorValue.child("content").once("value", function (contentRef) {
 
-        // Somebody changed the lang. Hey, we have to update it in our editor too!
+        // Somebody changed the language so update it for everyone
         currentEditorValue.child("lang").on("value", function (r) {
             var value = r.val();
             // Set the language
