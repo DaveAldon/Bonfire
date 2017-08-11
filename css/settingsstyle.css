@@ -1,7 +1,7 @@
 #settings {
-  position: absolute; left: 0; top: 50%; bottom: 50px;
+  position: absolute; left: 0; top: 75%; bottom: 50px;
   width: 175px;
-  background-color: rgb(245, 81, 81);
+  background-color: #262626;
 }
 
 .controls {
@@ -38,9 +38,9 @@
 }
 
 #logoutBtn:hover {
-  background:#AB4A00;
+  background:rgb(245, 81, 81);
 }
 
 .active logoutBtn {
-  background:#AB4A00;
+  background:rgb(245, 81, 81);
 }
