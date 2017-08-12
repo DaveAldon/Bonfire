@@ -175,6 +175,8 @@ a.hovertext:hover:after, a.hovertext:focus:after {
 }
 
 nav#nav-main {
+  position: fixed;
+  width: 100%;
   background-color: #262626;
   height: 50px;
   margin: 0;
