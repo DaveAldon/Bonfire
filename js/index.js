@@ -87,6 +87,8 @@ function update() {
         // Initialize the ACE editor
         editor = ace.edit("editor");
         editor.setTheme(getTheme());
+        editor.getSession().setUseWrapMode(true);
+        editor.setShowPrintMargin(false);
         editor.$blockScrolling = Infinity;
 
         // Get the queue reference
